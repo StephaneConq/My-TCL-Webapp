@@ -1,0 +1,83 @@
+mat-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.floating-buttons {
+  position: absolute;
+
+  @media screen and (min-width: 600px) {
+    top: 10px;
+    right: 10px;
+  }
+
+  &.opened {
+    @media screen and (max-width: 599px) {
+      bottom: calc(20px + 40vh);
+    }
+  }
+
+  @media screen and (max-width: 599px) {
+    bottom: 20px;
+    left: 10px;
+  }
+}
+
+.searchbar-container {
+  position: absolute;
+  height: 40px;
+  background-color: white;
+  border-radius: 20px;
+
+  @media screen and (max-width: 599px) {
+    top: 20px;
+    left: 5vw;
+    width: 90vw;
+  }
+
+  @media screen and (min-width: 600px) {
+    top: 20px;
+    left: 1vw;
+    width: 40vw;
+    border: 1px solid #e91e63;
+  }
+
+  mat-form-field {
+    width: 90%;
+  }
+}
+
+::ng-deep.mat-bottom-sheet-container {
+  padding: 0 !important;
+}
+
+mat-option {
+  img {
+    width: 45px;
+  }
+}
+
+.details {
+  width: 30vw;
+  height: 40vh;
+  position: absolute;
+  left: 1vw;
+  bottom: 1vh;
+  background-color: #303030;
+
+  .header {
+    flex-wrap: wrap;
+
+    span {
+      font-weight: bold;
+      margin-left: 15px;
+      font-size: large;
+    }
+  }
+
+  img {
+    width: 50px;
+  }
+
+}

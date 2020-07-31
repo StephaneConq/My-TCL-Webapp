@@ -1,0 +1,20 @@
+<div class="main" fxLayout="column">
+  <div class="full-width header" fxFlex="20" fxLayout="row" fxLayoutAlign="space-between center">
+    <span>{{data.nom}}</span>
+    <button mat-icon-button (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div fxFlex="80" class="full-width details">
+    <mat-list>
+      <div mat-subheader>Prochains départs</div>
+      <mat-list-item *ngFor="let line of getKeys(passages)">
+        <img [src]="getLineIcon(line)" [alt]="line"/>
+        <div mat-line>{{passages[line][0].direction}}</div>
+        <div mat-line>
+          <span>{{createNextDepartures(passages[line])}}</span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+</div>

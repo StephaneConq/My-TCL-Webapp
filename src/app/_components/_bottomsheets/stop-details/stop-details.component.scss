@@ -1,0 +1,27 @@
+.main {
+  height: 40vh;
+
+  .details {
+    background-color: white;
+    overflow-y: auto;
+
+    & * {
+      color: black;
+    }
+
+    img {
+      width: 50px;
+    }
+  }
+
+  .header {
+    span {
+      font-size: larger;
+      font-weight: bold;
+    }
+  }
+
+  .header, .details {
+    padding: 10px;
+  }
+}

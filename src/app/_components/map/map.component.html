@@ -1,0 +1,95 @@
+<mat-progress-bar *ngIf="displayLoader"
+                  class="full-width"
+                  mode="indeterminate"></mat-progress-bar>
+<main [ngClass]="{'loading': displayLoader}">
+  <google-map
+    #map
+    height="100vh"
+    width="100vw"
+    (zoomChanged)="changeMarkerIcons(map)"
+    [options]="mapOptions"
+    [center]="center"
+    [zoom]="zoom"
+  >
+    <map-marker
+      *ngIf="myPositionMarker.position"
+      [position]="myPositionMarker.position"
+      [options]="myPositionMarker.options"
+    ></map-marker>
+    <ng-container *ngIf="displayStops">
+      <map-marker *ngFor="let stop of stops"
+                  [options]="markerOptions"
+                  (mapClick)="selectStop(stop)"
+                  [position]="stop.position"></map-marker>
+    </ng-container>
+
+    <ng-container *ngIf="displayTraffic">
+      <map-polyline *ngFor="let t of traffic" [path]="t.paths" [options]="t.options"></map-polyline>
+    </ng-container>
+
+  </google-map>
+</main>
+
+<div fxLayout="row" class="floating-buttons" [ngClass]="{'opened': bottomSheetOpened || bottomSheetRef}">
+  <mat-button-toggle-group #group="matButtonToggleGroup" multiple="true">
+    <mat-button-toggle aria-label="Display traffic" [checked]="displayTraffic"
+                       (change)="displayTraffic = !displayTraffic">
+      <mat-icon>traffic</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle aria-label="Display stops" [checked]="displayStops" (change)="displayStops = !displayStops">
+      <mat-icon>tram</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<div class="searchbar-container" fxLayoutAlign="center start">
+  <mat-form-field>
+    <input matInput
+           (keydown)="onKeyDown($event)"
+           [(ngModel)]="searchModel"
+           (ngModelChange)="search($event)"
+           type="text"
+           aria-label="Search"
+           [matAutocomplete]="auto">
+    <mat-icon matPrefix>search</mat-icon>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let option of filteredOptions"
+                  fxLayoutAlign="start center"
+                  [value]="option" (click)="selectStop(option)">
+        {{option.nom}} -
+        <img *ngFor="let url of getLineImages(getLines(option.desserte))" [src]="url"/>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
+<!--<div class="details" fxLayout="column" fxLayoutAlign="center center" *ngIf="currentStop">
+  <div class="full-width header" fxFlex="10" fxLayout="row" fxLayoutAlign="space-between center">
+    <span>{{currentStop.nom}}</span>
+    <button mat-icon-button (click)="currentStop = null">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="full-width infos" fxFlex="90">
+    <app-passages-details [stop]="currentStop"></app-passages-details>
+  </div>
+</div>-->
+
+<mat-card class="details" *ngIf="currentStop">
+
+  <div fxLayout="row" fxLayoutAlign="start center">
+    <div fxFlex="90" fxLayoutAlign="start center" class="header">
+      <img *ngFor="let url of getLineImages(getLines(currentStop.desserte))" [src]="url"/>
+      <span>{{currentStop.nom}}</span>
+    </div>
+    <div fxFlex="10" fxLayoutAlign="center center">
+      <button mat-icon-button (click)="currentStop = null; resetZoom();">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <mat-card-content>
+    <app-passages-details [stop]="currentStop"></app-passages-details>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,16 @@
+<div fxLayout="column"
+     fxLayoutAlign="start start"
+     class="full-width main">
+
+  <p class="center-align full-width" *ngIf="getKeys(passages).length === 0">Pas de passage dans l'heure</p>
+
+  <div class="full-width passage"
+       fxLayout="row"
+       fxLayoutAlign="start center"
+       *ngFor="let ligne of getKeys(passages)">
+    <img [src]="getIconUrl(ligne)" [alt]="ligne"/>
+    <span>{{passages[ligne][0].direction}}</span>
+    <span>{{getTimes(passages[ligne])}}</span>
+  </div>
+
+</div>

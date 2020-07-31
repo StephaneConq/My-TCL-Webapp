@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+
+      - name: Set env
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
+      - name: Test variables
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
+
+      - name: Setup gcloud environment
+        uses: GoogleCloudPlatform/github-actions@0.1.2
+        with:
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+
+      - run: npm install
+
+      - run: npm run build:prod
+
+      - run: gcloud app deploy app.yml --quiet --project=pyrotracker --version=${{ env.RELEASE_VERSION }}
