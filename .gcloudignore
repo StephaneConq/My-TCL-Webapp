@@ -1,3 +1,4 @@
 src/
 e2e/
 .github/
+node_modules/
