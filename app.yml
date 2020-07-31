@@ -1,0 +1,17 @@
+service: default
+runtime: nodejs12
+
+handlers:
+  - url: /favicon\.ico
+    static_files: dist/tcl-front/favicon.ico
+    upload: dist/tcl-front/favicon\.ico
+
+  - url: /(.*\..*$)
+    static_files: dist/tcl-front/\1
+    upload: dist/tcl-front/(.*\..*$)
+
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    static_files: dist/tcl-front/index.html
+    upload: dist/tcl-front/index\.html

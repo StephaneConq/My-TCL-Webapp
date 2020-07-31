@@ -32,4 +32,4 @@ jobs:
 
       - run: npm run build:prod
 
-      - run: gcloud app deploy app.yml --quiet --project=pyrotracker --version=${{ env.RELEASE_VERSION }}
+      - run: gcloud app deploy app.yml --quiet --project=my-tcl-webapp --version=${{ env.RELEASE_VERSION }}
